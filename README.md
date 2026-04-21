@@ -93,7 +93,3 @@ python seance7-demo-3-protobuf-python/protobuf_compat.py
 
 > Remarque : `protobuf_compat.py` illustre la lecture de champs compatibles à partir d’un objet déjà désérialisé.
 
-## Notes
-
-- Les scripts sont volontairement simples et orientés démonstration.
-- Les trois supports de cours HTML d’origine ne font pas partie du contenu versionné de ce dépôt Git.
