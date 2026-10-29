@@ -1,95 +1,61 @@
-# Applications Distribuées — TP (Python)
+<div align="center">
 
-Ce dépôt regroupe des **mini-projets Python pédagogiques** autour des systèmes distribués et de la cybersécurité appliquée aux APIs : communication client/serveur, fiabilité (timeout, retry, backoff), asynchronisme, sérialisation (JSON/XML/Protobuf) et validation défensive.
+# Distributed Applications Labs
 
-## Objectifs pédagogiques
+Small Python programs on how distributed services talk to each other: HTTP client and server, retries with backoff, async calls, and safe serialization.
 
-- Comprendre les bases d’une communication distribuée avec la librairie standard Python.
-- Mettre en œuvre des patterns de résilience côté client.
-- Manipuler des formats de sérialisation avec validation stricte.
-- Identifier les surfaces de risque courantes (input invalide, timeouts, désérialisation).
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
+![asyncio](https://img.shields.io/badge/asyncio-30363D?style=flat-square)
+![Protobuf](https://img.shields.io/badge/Protocol_Buffers-30363D?style=flat-square)
 
-## Structure du dépôt
+<sub>Course labs · Distributed Applications · EIDIA, Euro-Mediterranean University of Fes</sub>
 
-### Séance 5 — Concepts distribués (exemples Python)
-- `ar-cs1-exemple-1-mini-client-serveur-http/`
-  - `serveur.py`
-  - `client.py`
-- `ar-cs1-exemple-2-retry-backoff-exponentiel/`
-  - `retry_backoff.py`
-- `ar-cs1-exemple-3-appels-asynchrones-asyncio/`
-  - `asyncio_appels.py`
+[Labs](#labs) &nbsp;·&nbsp; [Example output](#example-output) &nbsp;·&nbsp; [Getting started](#getting-started)
 
-### Séance 6 — APIs et fiabilité
-- `ar-cs6-exemple-1-mini-api-http/`
-  - `mini_api_server.py`
-- `ar-cs6-exemple-2-client-urllib-timeout-request-id/`
-  - `api_client.py`
-- `ar-cs6-exemple-3-retry-backoff-exponentiel/`
-  - `retry_backoff.py`
+</div>
 
-### Séance 7 — Sérialisation / marshalling
-- `seance7-demo-1-json-robuste/`
-  - `json_robuste.py`
-- `seance7-demo-2-xml-parsing-securite/`
-  - `xml_parsing.py`
-- `seance7-demo-3-protobuf-python/`
-  - `protobuf_encode_decode.py`
-  - `protobuf_compat.py`
+## Overview
 
-## Prérequis
+Each folder is a self-contained example built during the labs, using the Python standard library wherever possible. Together they cover the basics of distributed communication, client-side resilience, and the security risks of parsing untrusted data.
 
-- Python **3.10+** recommandé
-- Dépendances externes uniquement pour la partie Protobuf :
-  - `protobuf`
-  - `protoc` (compilateur Protocol Buffers) si vous générez `document_pb2.py`
+## Labs
 
-## Lancement rapide
+| Session | Folder | What it shows |
+|---|---|---|
+| 5 · Distributed concepts | `ar-cs1-exemple-1-mini-client-serveur-http` | A minimal HTTP server and a client that calls it |
+| | `ar-cs1-exemple-2-retry-backoff-exponentiel` | Retrying a failing call with exponential backoff |
+| | `ar-cs1-exemple-3-appels-asynchrones-asyncio` | Sequential calls versus parallel calls with `asyncio.gather` |
+| 6 · APIs and reliability | `ar-cs6-exemple-1-mini-api-http` | A small JSON HTTP API |
+| | `ar-cs6-exemple-2-client-urllib-timeout-request-id` | A `urllib` client with timeouts and a request ID header |
+| | `ar-cs6-exemple-3-retry-backoff-exponentiel` | Backoff applied to the API client |
+| 7 · Serialization | `seance7-demo-1-json-robuste` | Strict JSON validation before deserializing |
+| | `seance7-demo-2-xml-parsing-securite` | Parsing XML while rejecting `DOCTYPE` and entity declarations (XXE defense) |
+| | `seance7-demo-3-protobuf-python` | Encoding, decoding and schema compatibility with Protocol Buffers |
 
-Depuis la racine du dépôt :
+## Example output
+
+<img src="docs/screenshots/asyncio.svg" alt="asyncio demo output" width="760" />
+
+<sub>Real output of the asyncio lab (messages are in French): three calls take 1.6 s one after another and 0.8 s in parallel, the time of the slowest call.</sub>
+
+## Getting started
+
+**Requirements**: Python 3.10 or newer. Only the Protobuf lab needs extra packages: `protobuf`, and `protoc` if you regenerate `document_pb2.py`.
 
 ```bash
-# Séance 5 - exemple client/serveur HTTP
-python ar-cs1-exemple-1-mini-client-serveur-http/serveur.py
-# (dans un 2e terminal)
-python ar-cs1-exemple-1-mini-client-serveur-http/client.py
+# Example: client and server in two terminals
+cd ar-cs1-exemple-1-mini-client-serveur-http
+python3 serveur.py
+python3 client.py
 
-# Séance 5 - retry/backoff
-python ar-cs1-exemple-2-retry-backoff-exponentiel/retry_backoff.py
-
-# Séance 5 - asynchronisme asyncio
-python ar-cs1-exemple-3-appels-asynchrones-asyncio/asyncio_appels.py
-
-# Séance 6 - mini API HTTP
-python ar-cs6-exemple-1-mini-api-http/mini_api_server.py
-# (dans un 2e terminal)
-python ar-cs6-exemple-2-client-urllib-timeout-request-id/api_client.py
-
-# Séance 6 - retry générique
-python ar-cs6-exemple-3-retry-backoff-exponentiel/retry_backoff.py
-
-# Séance 7 - JSON robuste
-python seance7-demo-1-json-robuste/json_robuste.py
-
-# Séance 7 - XML parsing défensif
-python seance7-demo-2-xml-parsing-securite/xml_parsing.py
+# Example: async calls
+python3 ar-cs1-exemple-3-appels-asynchrones-asyncio/asyncio_appels.py
 ```
 
-## Protobuf (séance 7)
+## Author
 
-Exemple minimal de génération du module Python :
+Yassine Aitaouicha
 
-```bash
-pip install protobuf
-protoc --python_out=. document.proto
-```
+---
 
-Puis exécution :
-
-```bash
-python seance7-demo-3-protobuf-python/protobuf_encode_decode.py
-python seance7-demo-3-protobuf-python/protobuf_compat.py
-```
-
-> Remarque : `protobuf_compat.py` illustre la lecture de champs compatibles à partir d’un objet déjà désérialisé.
-
+<div align="center"><sub>Part of <a href="https://github.com/creepout777">Yassine Aitaouicha's projects</a></sub></div>
